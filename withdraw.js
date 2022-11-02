@@ -4,12 +4,23 @@ function Withdraw(){
   const [show, setShow]         = React.useState(true);
   const [status, setStatus]     = React.useState('');
   const [withdraw, setWithdraw  ] = React.useState('');
+  const [clickable, setClickable  ] = React.useState('');
 
   const ctx = React.useContext(UserContext);
 
   function validate(field, label){
       if (!field) {
         setStatus('Error: ' + label);
+        setTimeout(() => setStatus(''),3000);
+        return false;
+      }
+      if (isNaN(field)) {
+        setStatus('Not a Number, enter valid number: ' + field);
+        setTimeout(() => setStatus(''),3000);
+        return false;
+      }
+      if (field<0) {
+        setStatus('Enter positive withdrawal amount: ' + field);
         setTimeout(() => setStatus(''),3000);
         return false;
       }
@@ -34,6 +45,7 @@ function Withdraw(){
 
   function clearForm(){
     setWithdraw('');
+    setClickable(false);
     setShow(true);
   }
 
@@ -47,7 +59,7 @@ function Withdraw(){
     return (
       <Card
       bgcolor="danger"
-      header="withdraw"
+      header="Withdraw"
       status={status}
       body={ 
             <>
@@ -61,18 +73,20 @@ function Withdraw(){
   return (
     <Card
       bgcolor="danger"
-      header="withdraw"
+      header="Withdraw"
       status={status}
       body={show ? (  
               <>
-              <div> Balance of User:  </div>
+              <div> Balance:    {currentUser.balance} </div>
               <input type="text" className="form-control" id="withdraw" placeholder="Enter withdraw Amount" value={withdraw}
-               onChange={e => setWithdraw(e.currentTarget.value)}/><br/>
-              <button type="submit" className="btn btn-light" onClick={handleWithdraw}>withdraw Amount</button>
+               onChange={e => {setWithdraw(e.currentTarget.value); setClickable(true);}}/><br/>
+              <button type="submit" className="btn btn-light" onClick={handleWithdraw}
+               disabled={!clickable}>Withdraw Amount</button>
               </>
             ):(
               <>
               <h5>Success</h5>
+              <div> New Balance:   {currentUser.balance} </div>
 
               <button type="submit" className="btn btn-light" onClick={clearForm}>Withdraw more Money</button>
               </>

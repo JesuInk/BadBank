@@ -4,12 +4,23 @@ function Deposit(){
   const [show, setShow]         = React.useState(true);
   const [status, setStatus]     = React.useState('');
   const [deposit, setDeposit  ] = React.useState('');
+  const [clickable, setClickable  ] = React.useState('');
 
   const ctx = React.useContext(UserContext);
 
   function validate(field, label){
       if (!field) {
         setStatus('Error: ' + label);
+        setTimeout(() => setStatus(''),3000);
+        return false;
+      }
+      if (isNaN(field)) {
+        setStatus('Not a Number, enter valid number: ' + field);
+        setTimeout(() => setStatus(''),3000);
+        return false;
+      }
+      if (field<0) {
+        setStatus('Enter positive deposit amount: ' + field);
         setTimeout(() => setStatus(''),3000);
         return false;
       }
@@ -28,6 +39,7 @@ function Deposit(){
 
   function clearForm(){
     setDeposit('');
+    setClickable(false);
     setShow(true);
   }
 
@@ -59,14 +71,20 @@ function Deposit(){
       status={status}
       body={show ? (  
               <>
-              <div> Balance of User:  </div>
+              <div> Balance:   {currentUser.balance} </div>
               <input type="text" className="form-control" id="deposit" placeholder="Enter Deposit Amount" value={deposit}
-               onChange={e => setDeposit(e.currentTarget.value)}/><br/>
-              <button type="submit" className="btn btn-light" onClick={handleDeposit}>Deposit Amount</button>
+               onChange={e => {setDeposit(e.currentTarget.value); setClickable(true);}}/><br/>
+              <button 
+                type="submit" 
+                className="btn btn-light"
+                onClick={handleDeposit}
+                disabled={!clickable}
+              >Deposit Amount</button>
               </>
             ):(
               <>
               <h5>Success</h5>
+              <div> New Balance:   {currentUser.balance} </div>
 
               <button type="submit" className="btn btn-light" onClick={clearForm}>Add more Money</button>
               </>
