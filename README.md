@@ -3,7 +3,7 @@
 ## Project Title: BadBank.
 
 ## Description: 
-This project is a fullstack MIT capstone of a banking application which implements FrontEnd and BackEnd technologies. This projects has have in the early stages was a bank application with no security. In this version of the project the front end conects to the backend database.
+This project is a fullstack MIT capstone of a banking application which implements FrontEnd and BackEnd technologies. This projects in the early stages was a bank application with no security. In this version of the project the Front End connects to the backend database.
 
 ## Installation Guidelines: 
   ### Clone the repo:
